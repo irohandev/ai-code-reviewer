@@ -1,63 +1,198 @@
-* {
-  margin: 0%;
-  padding: 0%;
-  box-sizing: border-box;
+:root {
+  --primary-color: #6366f1;
+  --primary-hover: #4f46e5;
+  --dark-bg: #1e1e1e;
+  --light-bg: #ffffff;
+  --text-dark: #1e293b;
+  --text-light: #f8f8f2;
+  --border-radius: 8px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
 }
 
-html,
-body,
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  line-height: 1.6;
+  color: var(--text-dark);
+  background-color: #f9fafb;
+}
+
 #root {
   height: 100%;
   width: 100%;
 }
 
-main {
-  height: 100%;
-  width: 100%;
-  padding: 1.5rem;
+.app-container {
   display: flex;
-  gap: 1rem;
-}
-
-main .left,
-main .right {
-  height: 100%;
-  flex-basis: 50%;
-  border-radius: 0.7rem;
-}
-
-main .left {
-  background-color: #000000;
-  position: relative;
-}
-
-.left .code,
-.code pre,
-.code pre code {
-  height: 100%;
+  flex-direction: column;
+  height: 100vh;
   width: 100%;
+}
+
+.app-header {
+  padding: var(--spacing-md);
+  background-color: var(--primary-color);
+  color: white;
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.app-header h1 {
+  margin-bottom: var(--spacing-sm);
+  font-weight: 700;
+}
+
+.app-content {
+  display: flex;
+  flex: 1;
+  height: calc(100vh - 130px);
+  overflow: hidden;
+  padding: var(--spacing-md);
+  gap: var(--spacing-md);
+}
+
+@media (max-width: 768px) {
+  .app-content {
+    flex-direction: column;
+  }
+}
+
+.editor-section, 
+.review-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+  border-radius: var(--border-radius);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+  height: 100%;
+}
+
+.editor-section h2,
+.review-section h2 {
+  padding: var(--spacing-md);
   margin: 0;
-  border-radius: 0.7rem;
-  background-color: #0c0c0c;
+  background-color: #f1f5f9;
+  border-bottom: 1px solid #e2e8f0;
+  font-size: 1.2rem;
 }
 
-main .left .review {
-  position: absolute;
-  bottom: 1rem;
-  right: 1rem;
-  background-color: rgb(219, 219, 255);
-  color: #000000;
-  padding: 0.5rem 2rem;
-  font-weight: 500;
-  cursor: pointer;
-  user-select: none;
-  border-radius: 0.7rem;
-}
-
-
-main .right {
-  background-color: #343434;
-  padding: 1rem 2rem;
-  font-size: 1.5rem;
+.code-editor-container {
+  flex: 1;
+  padding: var(--spacing-md);
+  background-color: var(--dark-bg);
   overflow: auto;
+  height: calc(100% - 120px);
+}
+
+.review-button {
+  margin: var(--spacing-md);
+  padding: var(--spacing-md);
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: var(--border-radius);
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.1s;
+}
+
+.review-button:hover {
+  background-color: var(--primary-hover);
+}
+
+.review-button:active {
+  transform: translateY(1px);
+}
+
+.review-button:disabled {
+  background-color: #9ca3af;
+  cursor: not-allowed;
+}
+
+.review-content {
+  flex: 1;
+  padding: var(--spacing-md);
+  overflow-y: auto;
+  height: calc(100% - 56px);
+}
+
+.error-message {
+  padding: var(--spacing-md);
+  background-color: #fee2e2;
+  border-left: 4px solid #ef4444;
+  color: #b91c1c;
+  border-radius: var(--border-radius);
+}
+
+.loading-indicator {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  color: #6b7280;
+}
+
+.empty-state {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  color: #9ca3af;
+  font-style: italic;
+}
+
+.app-footer {
+  padding: var(--spacing-md);
+  text-align: center;
+  background-color: #f1f5f9;
+  color: #64748b;
+  border-top: 1px solid #e2e8f0;
+}
+
+.prism-editor__textarea:focus {
+  outline: none;
+}
+
+.prism-editor__container {
+  height: 100%;
+  min-height: 100%;
+}
+
+.review-content h1,
+.review-content h2,
+.review-content h3 {
+  margin-top: var(--spacing-lg);
+  margin-bottom: var(--spacing-md);
+}
+
+.review-content p,
+.review-content ul,
+.review-content ol {
+  margin-bottom: var(--spacing-md);
+}
+
+.review-content pre {
+  background-color: var(--dark-bg);
+  border-radius: var(--border-radius);
+  padding: var(--spacing-md);
+  overflow-x: auto;
+}
+
+.review-content code {
+  font-family: 'Fira Code', 'Courier New', monospace;
 }
