@@ -1,40 +1,51 @@
+// Import necessary React hooks
 import { useState, useEffect } from 'react';
+
+// Import Axios for making API requests
 import axios from 'axios';
+
+// Import code editor and Markdown renderer
 import Editor from "react-simple-code-editor";
 import Markdown from "react-markdown";
+
+// Import syntax highlighting libraries
 import rehypeHighlight from "rehype-highlight";
 import prism from "prismjs";
 
-// Import stylesheets
+// Import stylesheets for syntax highlighting and general styling
 import "prismjs/themes/prism-tomorrow.css";
 import "highlight.js/styles/github-dark.css";
 import './App.css';
 
 function App() {
-  // State management
+  // State variables to manage code input, review response, loading state, and errors
   const [code, setCode] = useState("// Enter your JavaScript code here...");
   const [review, setReview] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  // Initialize syntax highlighting on component mount
+  // Run syntax highlighting when the component mounts
   useEffect(() => {
     prism.highlightAll();
   }, []);
 
-  // Function to fetch code review from the API
+  // Function to send code to the API and get a review
   async function reviewCode() {
     try {
-      setIsLoading(true);
-      setError(null);
-      
+      setIsLoading(true);  // Indicate loading state
+      setError(null);  // Reset previous errors
+
+      // Send a POST request with the code to the API
       const response = await axios.post('http://localhost:3000/ai/get-review', { code });
+
+      // Update state with the received review
       setReview(response.data);
     } catch (err) {
+      // Handle errors and update error message
       setError("Failed to get review. Please try again.");
       console.error("Review request failed:", err);
     } finally {
-      setIsLoading(false);
+      setIsLoading(false);  // Reset loading state
     }
   }
 
@@ -43,15 +54,16 @@ function App() {
       <header className="app-header">
         <h1>Code Review Assistant</h1>
       </header>
-      
+
       <main className="app-content">
+        {/* Code editor section */}
         <section className="editor-section">
           <h2>Your Code</h2>
           <div className="code-editor-container">
             <Editor
               value={code}
-              onValueChange={code => setCode(code)}
-              highlight={code => prism.highlight(code, prism.languages.javascript, "javascript")}
+              onValueChange={code => setCode(code)}  // Update code state on change
+              highlight={code => prism.highlight(code, prism.languages.javascript, "javascript")}  // Apply syntax highlighting
               padding={16}
               className="prism-editor__textarea"
               style={{
@@ -64,31 +76,33 @@ function App() {
               }}
             />
           </div>
-          
+
+          {/* Button to trigger code review */}
           <button 
             onClick={reviewCode}
-            disabled={isLoading || !code.trim()}
+            disabled={isLoading || !code.trim()}  // Disable button when loading or no code entered
             className="review-button"
           >
             {isLoading ? "Analyzing..." : "Review Code"}
           </button>
         </section>
 
+        {/* Section to display review results */}
         <section className="review-section">
           <h2>Code Review</h2>
           <div className="review-content">
-            {error && <div className="error-message">{error}</div>}
-            {isLoading && <div className="loading-indicator">Analyzing your code...</div>}
-            {!isLoading && !error && !review && <div className="empty-state">Your code review will appear here</div>}
+            {error && <div className="error-message">{error}</div>}  {/* Display error if present */}
+            {isLoading && <div className="loading-indicator">Analyzing your code...</div>}  {/* Show loading indicator */}
+            {!isLoading && !error && !review && <div className="empty-state">Your code review will appear here</div>}  {/* Placeholder if no review */}
             {!isLoading && !error && review && (
               <Markdown rehypePlugins={[rehypeHighlight]}>
-                {review}
+                {review}  {/* Render the review response as Markdown */}
               </Markdown>
             )}
           </div>
         </section>
       </main>
-      
+
       <footer className="app-footer">
         <p>Powered by AI Code Review</p>
       </footer>
