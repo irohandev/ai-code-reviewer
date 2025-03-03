@@ -1,18 +1,9 @@
-// Import necessary React hooks
 import { useState, useEffect } from 'react';
-
-// Import Axios for making API requests
 import axios from 'axios';
-
-// Import code editor and Markdown renderer
 import Editor from "react-simple-code-editor";
 import Markdown from "react-markdown";
-
-// Import syntax highlighting libraries
 import rehypeHighlight from "rehype-highlight";
 import prism from "prismjs";
-
-// Import stylesheets for syntax highlighting and general styling
 import "prismjs/themes/prism-tomorrow.css";
 import "highlight.js/styles/github-dark.css";
 import './App.css';
